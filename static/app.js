@@ -4,6 +4,7 @@
 
   const btnGo = qs('#go');
   const btnStop = qs('#stop');
+  const btnDownload = qs('#download-excel');
   const progressContainer = qs('#progress');
   const progressFill = qs('.progress-fill');
   const statusEl = qs('#status');
@@ -17,6 +18,7 @@
   let total = 0;
   let completed = 0;
   let aborted = false;
+  let hasResults = false;
 
   function resetUI() {
     qsa('#thead th:not(:first-child)').forEach(el => el.remove());
@@ -30,9 +32,17 @@
     percentEl.textContent = '0%';
     logContent.textContent = '';
     logEl.classList.add('hidden');
+    btnDownload.classList.add('hidden');
     completed = 0;
     total = 0;
     aborted = false;
+    hasResults = false;
+  }
+
+  function showDownloadButton() {
+    if (hasResults) {
+      btnDownload.classList.remove('hidden');
+    }
   }
 
   function appendColumnHeader(text) {
@@ -72,6 +82,8 @@
       
       tr.appendChild(td);
     });
+    
+    hasResults = true;
   }
 
   function setProgress(pct, text) {
@@ -91,6 +103,30 @@
     if (es) { es.close(); es = null; }
     btnGo.disabled = false;
     btnStop.disabled = true;
+  }
+
+  function downloadExcel() {
+    if (!hasResults) {
+      alert('No analysis results available to download.');
+      return;
+    }
+
+    const originalText = btnDownload.innerHTML;
+    btnDownload.innerHTML = '<span class="download-icon">⏳</span> Preparing Download...';
+    btnDownload.disabled = true;
+
+    const downloadUrl = '/download-excel';
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => {
+      btnDownload.innerHTML = originalText;
+      btnDownload.disabled = false;
+    }, 2000);
   }
 
   btnGo.addEventListener('click', () => {
@@ -160,6 +196,8 @@
       setProgress(100, aborted ? 'Analysis stopped' : 'Competitive analysis complete!');
       addLog('\n✅ Step 3 completed successfully!');
       addLog('📈 Review results above and proceed to Step 4 when ready.');
+      addLog('💾 Click "Download Excel Report" to save your analysis results.');
+      showDownloadButton();
       stopStream();
     });
 
@@ -175,4 +213,6 @@
     stopStream();
     setProgress(100, 'Analysis stopped');
   });
+
+  btnDownload.addEventListener('click', downloadExcel);
 })();
