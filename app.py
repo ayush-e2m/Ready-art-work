@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
 Complete Flask web app for Competitor Web UI UX Analysis - Step 3
-Railway.com Deployment Ready
+Production Ready for Railway.com
 """
 
 import json
 import re
 import time
 import traceback
+import os
 from typing import Dict, List, Optional, Generator
 from bs4 import BeautifulSoup
 from datetime import datetime
 import io
-import os
 
 from flask import Flask, render_template, request, Response, stream_with_context, jsonify, send_file
 from openpyxl import Workbook
@@ -113,7 +113,7 @@ def _wait_for_content_growth(driver, wait: WebDriverWait, min_growth: int = 80) 
 def _make_driver(headless: bool = True) -> webdriver.Chrome:
     chrome_opts = Options()
     
-    # Railway/Production Chrome options
+    # Production Chrome options for Railway
     chrome_opts.add_argument("--headless=new")
     chrome_opts.add_argument("--no-sandbox")
     chrome_opts.add_argument("--disable-dev-shm-usage")
@@ -124,7 +124,6 @@ def _make_driver(headless: bool = True) -> webdriver.Chrome:
     chrome_opts.add_argument("--disable-extensions")
     chrome_opts.add_argument("--disable-plugins")
     chrome_opts.add_argument("--disable-images")
-    chrome_opts.add_argument("--disable-javascript")
     chrome_opts.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
     
     try:
@@ -142,11 +141,13 @@ def _make_driver(headless: bool = True) -> webdriver.Chrome:
 
 def _analyze_one_with_debugging(target_url: str, timeout: int = DEFAULT_TIMEOUT) -> tuple[str, List[str]]:
     debug_log = []
-    driver = _make_driver(headless=True)
-    wait = WebDriverWait(driver, timeout)
+    driver = None
     
     try:
         debug_log.append("Creating fresh Chrome driver...")
+        driver = _make_driver(headless=True)
+        wait = WebDriverWait(driver, timeout)
+        
         debug_log.append(f"Navigating to {RATEMYSITE_URL}")
         driver.get(RATEMYSITE_URL)
         
@@ -221,8 +222,12 @@ def _analyze_one_with_debugging(target_url: str, timeout: int = DEFAULT_TIMEOUT)
         debug_log.append(f"Traceback: {traceback.format_exc()}")
         return "", debug_log
     finally:
-        debug_log.append("Closing driver...")
-        driver.quit()
+        if driver:
+            debug_log.append("Closing driver...")
+            try:
+                driver.quit()
+            except Exception:
+                pass
 
 def _clean_text(text: str) -> str:
     """Clean text while preserving meaningful structure"""
@@ -549,8 +554,11 @@ def download_excel():
         print(f"Error creating Excel file: {e}")
         return jsonify({"error": "Failed to create Excel file"}), 500
 
+@app.route("/health")
+def health():
+    return {"status": "healthy", "message": "Step 3: Competitor Web UI UX Analysis is running"}
+
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') == 'development'
     app.run(debug=debug, host="0.0.0.0", port=port)
