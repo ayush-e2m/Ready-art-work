@@ -112,14 +112,33 @@ def _wait_for_content_growth(driver, wait: WebDriverWait, min_growth: int = 80) 
 
 def _make_driver(headless: bool = True) -> webdriver.Chrome:
     chrome_opts = Options()
-    if headless:
-        chrome_opts.add_argument("--headless=new")
-        chrome_opts.add_argument("--disable-gpu")
+    
+    # Railway/Production Chrome options
+    chrome_opts.add_argument("--headless=new")
     chrome_opts.add_argument("--no-sandbox")
     chrome_opts.add_argument("--disable-dev-shm-usage")
+    chrome_opts.add_argument("--disable-gpu")
+    chrome_opts.add_argument("--disable-features=VizDisplayCompositor")
     chrome_opts.add_argument("--window-size=1920,1080")
-    service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=chrome_opts)
+    chrome_opts.add_argument("--remote-debugging-port=9222")
+    chrome_opts.add_argument("--disable-extensions")
+    chrome_opts.add_argument("--disable-plugins")
+    chrome_opts.add_argument("--disable-images")
+    chrome_opts.add_argument("--disable-javascript")
+    chrome_opts.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+    
+    try:
+        # Try to use system Chrome first (for Railway)
+        service = Service()
+        return webdriver.Chrome(service=service, options=chrome_opts)
+    except Exception:
+        # Fallback to webdriver-manager
+        try:
+            service = Service(ChromeDriverManager().install())
+            return webdriver.Chrome(service=service, options=chrome_opts)
+        except Exception as e:
+            print(f"Chrome driver setup failed: {e}")
+            raise
 
 def _analyze_one_with_debugging(target_url: str, timeout: int = DEFAULT_TIMEOUT) -> tuple[str, List[str]]:
     debug_log = []
