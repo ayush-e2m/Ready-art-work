@@ -1,40 +1,30 @@
 /* Step 3: Competitor Web UI UX Analysis Styles */
 :root {
-  /* Professional Color Palette */
   --primary-blue: #0066CC;
   --secondary-blue: #004A99;
   --accent-blue: #3399FF;
   --light-blue: #E6F3FF;
-  
   --primary-gray: #2C3E50;
   --secondary-gray: #34495E;
   --light-gray: #F8F9FA;
   --border-gray: #E1E8ED;
   --text-gray: #5D6D7E;
-  
   --success-green: #27AE60;
   --warning-orange: #F39C12;
   --error-red: #E74C3C;
-  
   --white: #FFFFFF;
   --black: #1C2833;
-  
-  /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
-  /* Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   --spacing-xxl: 4rem;
-  
-  /* Borders & Shadows */
   --border-radius: 8px;
   --border-radius-lg: 12px;
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -85,7 +75,6 @@ body {
   gap: var(--spacing-md);
 }
 
-/* Step Indicator */
 .step-indicator {
   width: 48px;
   height: 48px;
@@ -465,6 +454,7 @@ button:disabled {
 .results-header {
   text-align: center;
   margin-bottom: var(--spacing-xl);
+  position: relative;
 }
 
 .results-header h3 {
@@ -477,6 +467,62 @@ button:disabled {
 .results-header p {
   color: var(--text-gray);
   font-size: 1rem;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Excel Download Button */
+.results-actions {
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.download-btn {
+  background: linear-gradient(135deg, var(--success-green), #2ECC71);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  box-shadow: var(--shadow-sm);
+}
+
+.download-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2ECC71, var(--success-green));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.download-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.download-icon {
+  font-size: 1rem;
+}
+
+.download-btn:not(.hidden) {
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .table-container {
@@ -543,13 +589,11 @@ button:disabled {
   font-style: italic;
 }
 
-/* Data cells */
 .results-table tbody td:not(.metric-label) {
   font-size: 0.875rem;
   line-height: 1.5;
 }
 
-/* Score values */
 .results-table tbody tr[data-key$="Score"] td[data-score-only] {
   text-align: center;
   font-weight: var(--font-weight-bold);
@@ -558,7 +602,6 @@ button:disabled {
   background: rgba(0, 102, 204, 0.1);
 }
 
-/* Description cells */
 .description-cell,
 .results-table tbody tr[data-key*="Description"] td:not(.metric-label) {
   white-space: pre-wrap;
@@ -570,7 +613,6 @@ button:disabled {
   padding: var(--spacing-sm) var(--spacing-md);
 }
 
-/* URL links */
 .results-table a {
   color: var(--primary-blue);
   text-decoration: none;
@@ -777,6 +819,16 @@ button:disabled {
   .competitor-title {
     font-size: 1rem;
   }
+  
+  .results-actions {
+    margin-top: var(--spacing-sm);
+  }
+  
+  .download-btn {
+    font-size: 0.75rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    min-width: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -798,5 +850,16 @@ button:disabled {
   
   .competitor-inputs {
     gap: var(--spacing-sm);
+  }
+  
+  .results-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .download-btn {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
   }
 }
