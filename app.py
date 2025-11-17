@@ -531,5 +531,7 @@ def download_excel():
         return jsonify({"error": "Failed to create Excel file"}), 500
 
 if __name__ == "__main__":
+    import os
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    debug = os.environ.get('FLASK_ENV') == 'development'
+    app.run(debug=debug, host="0.0.0.0", port=port)
