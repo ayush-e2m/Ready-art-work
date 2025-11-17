@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="analysis-form">
+  <form id="form" class="form-card" onsubmit="return false;">
+    <div class="form-header">
+      <h3>Competitor UI/UX Comparison</h3>
+      <p>Compare your website's user experience against competitors to identify opportunities for improvement. This analysis provides detailed insights into design effectiveness, user journey optimization, and conversion potential.</p>
+    </div>
+
+    <!-- Primary Website Input -->
+    <div class="primary-input-section">
+      <div class="input-group primary-group">
+        <label class="primary-label">
+          <span class="label-icon primary-icon">🎯</span>
+          Your Website
+          <span class="label-desc">The primary website you want to analyze and improve</span>
+        </label>
+        <input type="url" id="u1" placeholder="https://yoursite.com" class="url-input primary-input" required>
+      </div>
+    </div>
+
+    <!-- Competitor Inputs -->
+    <div class="competitor-section">
+      <h4 class="competitor-title">
+        <span class="competitor-icon">🔍</span>
+        Competitor Websites
+        <span class="optional-badge">Optional</span>
+      </h4>
+      <p class="competitor-subtitle">Add up to 3 competitor websites to benchmark against your site's performance</p>
+      <div class="competitor-inputs">
+        <div class="input-group">
+          <label>
+            <span class="label-icon">1</span>
+            Competitor #1
+          </label>
+          <input type="url" id="u2" placeholder="https://competitor1.com" class="url-input">
+        </div>
+        <div class="input-group">
+          <label>
+            <span class="label-icon">2</span>
+            Competitor #2
+          </label>
+          <input type="url" id="u3" placeholder="https://competitor2.com" class="url-input">
+        </div>
+        <div class="input-group">
+          <label>
+            <span class="label-icon">3</span>
+            Competitor #3
+          </label>
+          <input type="url" id="u4" placeholder="https://competitor3.com" class="url-input">
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button id="go" class="btn-primary">
+        <span class="btn-icon">🚀</span>
+        Start Competitor Analysis
+      </button>
+      <button id="stop" type="button" class="btn-secondary" disabled>
+        <span class="btn-icon">⏸</span>
+        Stop Analysis
+      </button>
+    </div>
+
+    <div id="progress" class="progress-container hidden">
+      <div class="progress-info">
+        <span id="status" class="progress-status"></span>
+        <span class="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="results-section">
+  <div class="results-header">
+    <h3>UI/UX Competitive Analysis Results</h3>
+    <p>Detailed comparison metrics to identify strengths, weaknesses, and optimization opportunities</p>
+  </div>
+  
+  <div class="table-container">
+    <table id="compare" class="results-table">
+      <thead>
+        <tr id="thead">
+          <th class="metric-header">UI/UX Metrics</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr data-key="Company"><td class="metric-label">Company</td></tr>
+        <tr data-key="URL"><td class="metric-label">Website URL</td></tr>
+        <tr data-key="Overall Score"><td class="metric-label overall-score">Overall UI/UX Score</td></tr>
+        <tr data-key="Description of Website"><td class="metric-label">Website Overview</td></tr>
+        
+        <tr class="section-divider"><td class="section-title">👥 User Experience Analysis</td></tr>
+        <tr data-key="Consumer Score"><td class="metric-label score-metric">Consumer Appeal Score</td></tr>
+        <tr data-key="Consumer Score Description"><td class="metric-label description-metric">Consumer Experience Analysis</td></tr>
+        <tr data-key="Developer Score"><td class="metric-label score-metric">Technical Implementation Score</td></tr>
+        <tr data-key="Developer Score Description"><td class="metric-label description-metric">Technical Assessment</td></tr>
+        <tr data-key="Investor Score"><td class="metric-label score-metric">Business Impact Score</td></tr>
+        <tr data-key="Investor Score Description"><td class="metric-label description-metric">Business Value Analysis</td></tr>
+        
+        <tr class="section-divider"><td class="section-title">🎨 Design & Usability Metrics</td></tr>
+        <tr data-key="Clarity Score"><td class="metric-label score-metric">Content Clarity Score</td></tr>
+        <tr data-key="Clarity Score Description"><td class="metric-label description-metric">Content & Information Architecture</td></tr>
+        <tr data-key="Visual Design Score"><td class="metric-label score-metric">Visual Design Score</td></tr>
+        <tr data-key="Visual Design Score Description"><td class="metric-label description-metric">Visual Design Assessment</td></tr>
+        <tr data-key="UX Score"><td class="metric-label score-metric">User Experience Score</td></tr>
+        <tr data-key="UX Score Description"><td class="metric-label description-metric">UX & Navigation Analysis</td></tr>
+        <tr data-key="Trust Score"><td class="metric-label score-metric">Trust & Credibility Score</td></tr>
+        <tr data-key="Trust Score Description"><td class="metric-label description-metric">Trust Indicators Assessment</td></tr>
+        <tr data-key="Value Prop Score"><td class="metric-label score-metric">Value Communication Score</td></tr>
+        <tr data-key="Value Prop Score Description"><td class="metric-label description-metric">Value Proposition Clarity</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="log" class="debug-log hidden">
+  <div class="log-header">
+    <h4>Analysis Progress Log</h4>
+    <p>Real-time analysis progress and technical details</p>
+  </div>
+  <div class="log-content"></div>
+</div>
+
+<div class="next-steps">
+  <div class="next-content">
+    <h3>Analysis Complete!</h3>
+    <p>Review your competitive analysis results above. When ready, proceed to Step 4 for optimization recommendations.</p>
+    <button onclick="goToNextStep()" class="next-button">
+      Continue to Step 4 →
+    </button>
+  </div>
+</div>
+{% endblock %}
