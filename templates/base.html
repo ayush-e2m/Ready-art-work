@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Step 3: Competitor Web UI UX Analysis</title>
+  <meta name="description" content="Professional competitor website analysis tool. Compare UI/UX performance across multiple websites to identify optimization opportunities.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="nav-brand">
+        <div class="step-indicator">
+          <span class="step-number">3</span>
+        </div>
+        <div class="brand-text">
+          <h1>Competitor Web UI UX</h1>
+          <p class="tagline">Data-Driven Competitive Analysis</p>
+        </div>
+      </div>
+      <div class="process-nav">
+        <span class="process-step completed">Step 1</span>
+        <span class="process-step completed">Step 2</span>
+        <span class="process-step current">Step 3</span>
+        <span class="process-step">Step 4</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="hero-section">
+      <div class="container">
+        <h2 class="hero-title">Competitor UI/UX Analysis</h2>
+        <p class="hero-subtitle">Analyze and compare your website's user experience against competitors. Get actionable insights to improve conversion rates and user engagement.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="step-indicator small">
+            <span class="step-number">3</span>
+          </div>
+          <p class="footer-text">Competitor Web UI UX Analysis<br>Step 3 of 4 in the optimization process</p>
+        </div>
+        <div class="footer-links">
+          <button onclick="history.back()" class="footer-link">← Previous Step</button>
+          <button onclick="goToNextStep()" class="footer-link">Next Step →</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script>
+    function goToNextStep() {
+      // Replace with your next step URL
+      alert('Proceeding to Step 4...');
+    }
+  </script>
+</body>
+</html>
